@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - IEEE Computer Society Student Chapter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00629B;
+            --secondary-color: #FF6900;
+            --accent-color: #5C87A2;
+            --light-color: #F8F9FA;
+            --dark-color: #212529;
+          --text-color: #333333;
+            --text-light: #6C757D;
+            --bg-color: #FFFFFF;
+            --card-bg: #FFFFFF;
+            --border-color: #E9ECEF;
+            --footer-bg: #212529;
+            --footer-text: #FFFFFF;
+            --section-padding: 80px 0;
+            --shadow-3d: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --transform-3d: perspective(1000px);
+            --particle-color: rgba(0, 98, 155, 0.5);
+            --particle-size: 3;
+            --particle-speed: 1;
+            --connection-distance: 100;
+            --connection-color: rgba(0, 98, 155, 0.2);
+        }
+        /* Orange 3D Theme */
+        body.orange-3d-theme {
+            --primary-color: #FF6B35;
+            --secondary-color: #F7931E;
+            --accent-color: #FFAB00;
+            --light-color: #FFF8F0;
+            --dark-color: #1A1A1A;
+            --text-color: #FFFFFF;
+            --text-light: #FFD8A8;
+            --bg-color: #0D0D0D;
+            --card-bg: rgba(255, 107, 53, 0.1);
+            --border-color: rgba(255, 107, 53, 0.3);
+            --footer-bg: #0A0A0A;
+            --footer-text: #FFFFFF;
+            --shadow-3d: 0 15px 30px rgba(255, 107, 53, 0.3);
+            --transform-3d: perspective(1000px) rotateX(5deg);
+            --particle-color: rgba(255, 107, 53, 0.8);
+            --particle-size: 4;
+            --particle-speed: 1.5;
+            --connection-distance: 120;
+            --connection-color: rgba(255, 107, 53, 0.4);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: all 0.5s ease;
+        }
+        /* 3D Particle Background Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        /* Theme Toggle in Header */
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+        }
+        .theme-toggle {
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: var(--shadow-3d);
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+        }
+        body.orange-3d-theme .theme-toggle {
+            background: var(--secondary-color);
+        }
+        /* 3D Effects for Orange Theme */
+        body.orange-3d-theme .card-3d {
+            transform: var(--transform-3d);
+            box-shadow: var(--shadow-3d);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        body.orange-3d-theme .card-3d:hover {
+            transform: perspective(1000px) rotateX(10deg) translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.5);
+        }
+        body.orange-3d-theme .btn-3d {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+        body.orange-3d-theme .btn-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        body.orange-3d-theme .btn-3d:hover::before {
+            left: 100%;
+        }
+        body.orange-3d-theme .btn-3d:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.6);
+        }
+        /* Navbar */
+        .navbar {
+            background-color: var(--bg-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 999;
+        }
+        body.orange-3d-theme .navbar {
+            background-color: rgba(13, 13, 13, 0.9);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-brand img {
+            max-width: 180px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        .nav-link {
+            color: var(--dark-color) !important;
+            font-weight: 500;
+            margin: 0 10px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        body.orange-3d-theme .nav-link {
+            color: var(--text-color) !important;
+        }
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .navbar-social {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .navbar-social a {
+            color: var(--dark-color);
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+        body.orange-3d-theme .navbar-social a {
+            color: var(--text-color);
+        }
+        .navbar-social a:hover {
+            color: var(--primary-color);
+        }
+        /* Blog Hero Section */
+        .blog-hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 400px 0 ;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        body.orange-3d-theme .blog-hero {
+            background: linear-gradient(135deg, #FF6B35, #F7931E, #FFAB00);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .blog-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+        }
+        body.orange-3d-theme .blog-hero h1 {
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        .blog-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out 0.2s;
+            animation-fill-mode: both;
+        }
+        /* Blog Section */
+        .blog-section {
+            padding: 80px 0;
+            position: relative;
+            z-index: 1;
+        }
+        /* Section Separator */
+        .section-separator {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: 40px 0;
+            width: 100%;
+        }
+        body.orange-3d-theme .section-separator {
+            background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+        }
+        /* Blog Filters */
+        .blog-filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .category-btn {
+            padding: 12px 24px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--secondary-color);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .category-btn:hover::before {
+            width: 100%;
+        }
+        
+        .category-btn:hover {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-btn.active {
+            background:  var(--primary-color);
+            color: white;
+            border-color: transparent;
+        }
+        
+        body.orange-3d-theme .category-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--border-color);
+        }
+        
+        body.orange-3d-theme .category-btn:hover {
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.6);
+        }
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        body.orange-3d-theme .search-box input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 98, 155, 0.1);
+        }
+        body.orange-3d-theme .search-box input:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
+        }
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 5px;
+        }
+        body.orange-3d-theme .search-box button {
+            color: var(--secondary-color);
+        }
+        /* Blog Cards */
+        .blog-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .blog-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        body.orange-3d-theme .blog-card {
+            background-color: rgba(255, 107, 53, 0.1);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-3d);
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        body.orange-3d-theme .blog-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.5);
+        }
+        .blog-card-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .new-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .blog-card-content {
+            padding: 25px;
+        }
+        .blog-card-category {
+            display: inline-block;
+            background-color: rgba(0, 98, 155, 0.1);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        body.orange-3d-theme .blog-card-category {
+            background-color: rgba(255, 107, 53, 0.2);
+            color: var(--secondary-color);
+        }
+        .blog-card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        body.orange-3d-theme .blog-card-title {
+            color: var(--secondary-color);
+        }
+        .blog-card-excerpt {
+            color: var(--text-color);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .blog-card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        .blog-card-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .author-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .blog-card-date {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        /* Pagination */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        .pagination {
+            display: flex;
+            gap: 10px;
+        }
+        .page-link {
+            padding: 12px 24px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--secondary-color);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .page-link:hover::before {
+            width: 100%;
+        }
+        
+        .page-link:hover {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .page-link.active {
+            background:  var(--primary-color);
+            color: white;
+            border-color: transparent;
+        }
+        
+        body.orange-3d-theme .page-link {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--border-color);
+        }
+        
+        body.orange-3d-theme .page-link:hover {
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.6);
+        }
+        .page-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 15px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        /* Blog Detail Modal */
+        .blog-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+        .blog-modal-content {
+            background-color: var(--card-bg);
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            margin-top: 80px;
+        }
+        body.orange-3d-theme .blog-modal-content {
+            background-color: rgba(255, 107, 53, 0.1);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-3d);
+        }
+        .modal-close {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        .modal-close:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+        .blog-modal-image {
+            width: 100%;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+        }
+        .blog-modal-body {
+            padding: 40px;
+        }
+        .blog-modal-category {
+            display: inline-block;
+            background-color: rgba(0, 98, 155, 0.1);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        body.orange-3d-theme .blog-modal-category {
+            background-color: rgba(255, 107, 53, 0.2);
+            color: var(--secondary-color);
+        }
+        .blog-modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        body.orange-3d-theme .blog-modal-title {
+            color: var(--secondary-color);
+        }
+        .blog-modal-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .blog-modal-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .author-name {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        body.orange-3d-theme .author-name {
+            color: var(--secondary-color);
+        }
+        .author-title {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        .blog-modal-date {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-light);
+        }
+        .blog-modal-content-text {
+            color: var(--text-color);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        .blog-modal-gallery {
+            margin-top: 30px;
+        }
+        .blog-modal-gallery h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        body.orange-3d-theme .blog-modal-gallery h3 {
+            color: var(--secondary-color);
+        }
+        .gallery-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .gallery-image {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .gallery-image:hover {
+            transform: scale(1.05);
+        }
+        /* Future Blogs Note */
+        .future-blogs-note {
+            text-align: center;
+            margin: 40px 0;
+            padding: 20px;
+            background-color: rgba(0, 98, 155, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+        body.orange-3d-theme .future-blogs-note {
+            background-color: rgba(255, 107, 53, 0.05);
+            border-left: 4px solid var(--secondary-color);
+        }
+        .future-blogs-note h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        body.orange-3d-theme .future-blogs-note h3 {
+            color: var(--secondary-color);
+        }
+        .future-blogs-note p {
+            color: var(--text-light);
+        }
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* 3D Floating Elements for Orange Theme */
+        body.orange-3d-theme .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.8), rgba(255, 107, 53, 0.2));
+            filter: blur(5px);
+            animation: float 6s ease-in-out infinite;
+            z-index: -1;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+        .floating-1 {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        .floating-2 {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+        .floating-3 {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .blog-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .blog-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            .navbar-nav {
+                text-align: center;
+                margin-top: 10px;
+            }
+            
+            .navbar-nav .nav-item {
+                margin: 5px 0;
+            }
+            
+            .blog-hero {
+                padding: 300px 0 60px;
+            }
+            
+            .blog-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .blog-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .blog-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .blog-modal-body {
+                padding: 30px 20px;
+            }
+            
+            .blog-modal-title {
+                font-size: 1.5rem;
+            }
+            
+            .gallery-images {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .pagination {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-link {
+                min-width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+            
+            .modal-close {
+                top: 70px;
+            }
+        }
+        @media (max-width: 576px) {
+            .theme-toggle {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+            
+            .blog-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .blog-hero p {
+                font-size: 1rem;
+            }
+            
+            .blog-modal-image {
+                height: 250px;
+            }
+            
+            .page-info {
+                display: none;
+            }
+            
+            .modal-close {
+                top: 60px;
+            }
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #212529 0%, #00629B 50%, #f8f9fa 100%);
+            color: var(--footer-text);
+            padding: 50px 0 20px;
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 1;
+        }
+        body.orange-3d-theme footer {
+            background: linear-gradient(135deg, #0A0A0A 0%, #FF6B35 50%, #1A1A1A 100%);
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+        .footer-logo {
+            flex: 1;
+            min-width: 250px;
+        }
+        .footer-logo img {
+            max-width: 180px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .footer-logo p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        body.orange-3d-theme .footer-social a {
+            background-color: rgba(255, 107, 53, 0.2);
+        }
+        .footer-social a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+        .footer-links {
+            flex: 1;
+            min-width: 200px;
+        }
+        .footer-links h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        body.orange-3d-theme .footer-links h4 {
+            color: var(--secondary-color);
+        }
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--secondary-color);
+        }
+        body.orange-3d-theme .footer-links h4::after {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+            display: inline-block;
+        }
+        body.orange-3d-theme .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        .footer-contact {
+            flex: 1;
+            min-width: 250px;
+        }
+        .footer-contact h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        body.orange-3d-theme .footer-contact h4 {
+            color: var(--secondary-color);
+        }
+        .footer-contact h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--secondary-color);
+        }
+        body.orange-3d-theme .footer-contact h4::after {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .contact-info-item i {
+            color: var(--secondary-color);
+            margin-top: 5px;
+        }
+        body.orange-3d-theme .contact-info-item i {
+            color: var(--accent-color);
+        }
+        .contact-info-item p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Particle Background Canvas -->
+    <canvas id="particle-canvas"></canvas>
+    
+    <!-- 3D Floating Elements (visible only in orange 3D theme) -->
+    <div class="floating-element floating-1" style="display: none;"></div>
+    <div class="floating-element floating-2" style="display: none;"></div>
+    <div class="floating-element floating-3" style="display: none;"></div>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="CS LOGO-01.png" alt="IEEE Computer Society" id="navbar-logo">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#about">About</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#committee">Committee</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link active" href="FAQs.html">FAQs</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#contact">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="d-flex align-items-center">
+                <div class="navbar-social">
+                    <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/share/1Ant8gdz4W/
+                    " target="_blank" aria-label="Facebook">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href= "https://www.linkedin.com/company/ieee-computer-society-ttu/" target="_blank" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+                
+                <div class="theme-toggle-container">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <i class="fas fa-palette"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Blog Hero Section -->
+    <section class="blog-hero">
+        <div class="container">
+            <h1>Our Blog</h1>
+            <p>Stay updated with the latest news, events, and insights from our IEEE Computer Society Student Chapter.</p>
+        </div>
+    </section>
+    
+    <!-- Section Separator -->
+    <div class="section-separator"></div>
+    
+    <!-- Blog Section -->
+    <section class="blog-section">
+        <div class="container">
+            <!-- Blog Filters -->
+            <div class="blog-filters">
+                <div class="category-filter">
+                    <button class="category-btn active" data-category="all">All</button>
+                    <button class="category-btn" data-category="events">Events</button>
+                    <button class="category-btn" data-category="technology">Technology</button>
+                    <button class="category-btn" data-category="education">Education</button>
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search blog posts...">
+                    <button type="button" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Section Separator -->
+            <div class="section-separator"></div>
+            
+            <!-- Blog Cards -->
+            <div class="blog-container" id="blogContainer">
+                <!-- Blog cards will be dynamically loaded here -->
+            </div>
+            
+            <!-- Future Blogs Note - will be dynamically added -->
+            
+            <!-- Section Separator -->
+            <div class="section-separator"></div>
+            
+            <!-- Pagination -->
+            <div class="pagination-container">
+                <div class="pagination">
+                    <button class="page-link" data-page="prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="page-link active" data-page="1">1</button>
+                    <button class="page-link" data-page="2">2</button>
+                    <button class="page-link" data-page="3">3</button>
+                    <span class="page-info">Page 1 of 2 </span>
+                    <button class="page-link" data-page="next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Blog Detail Modal -->
+    <div class="blog-modal" id="blogModal">
+        <div class="blog-modal-content">
+            <div class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="blog-modal-image" id="modalImage"></div>
+            <div class="blog-modal-body">
+                <span class="blog-modal-category" id="modalCategory"></span>
+                <h2 class="blog-modal-title" id="modalTitle"></h2>
+                <div class="blog-modal-meta">
+                    <div class="blog-modal-author">
+                        <img src="esawi2.jpg" alt="Author" class="author-avatar" id="modalAuthorAvatar">
+                        <div class="author-info">
+                            <span class="author-name" id="modalAuthorName"></span>
+                            <span class="author-title" id="modalAuthorTitle"></span>
+                        </div>
+                    </div>
+                    <div class="blog-modal-date">
+                        <i class="far fa-calendar"></i>
+                        <span id="modalDate"></span>
+                    </div>
+                </div>
+                <div class="blog-modal-content-text" id="modalContent">
+                    <!-- Content will be dynamically inserted here -->
+                </div>
+                <div class="blog-modal-gallery">
+                    <h3>Gallery</h3>
+                    <div class="gallery-images" id="modalGallery">
+                        <!-- Gallery images will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="CS LOGO-01.png" alt="IEEE Computer Society" id="footer-logo">
+                    <p>Advancing computing as a science and profession through student engagement and innovation.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/ieee.cs.ttu?igsh=MWhqbTRuY3RoN3p1MA==" target="_blank" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.facebook.com/share/1Ant8gdz4W/
+                        " target="_blank" aria-label="Facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/company/ieee-computer-society-ttu/" target="_blank" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#events">Events</a></li>
+                        <li><a href="index.html#Committee">Our Committee</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="index.html#contact">Contact us</a></li>
+                    </ul>
+                </div>
+                
+                
+                
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <div class="contact-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Tafila , Jordan </p>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>ieeecsttu@gmail.com</p>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-clock"></i>
+                        <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 IEEE Computer Society Student Chapter. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Encrypted text effect for "Our Blog" heading
+        document.addEventListener('DOMContentLoaded', function() {
+            const blogHeading = document.querySelector('.blog-hero h1');
+            const originalText = blogHeading.textContent;
+            
+            // Characters to use for the encryption effect
+            const encryptionChars = '!@#$%^&*()_+-=[]{}|;:,.<>?~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+            
+            // Function to generate a random character
+            function getRandomChar() {
+                return encryptionChars.charAt(Math.floor(Math.random() * encryptionChars.length));
+            }
+            
+            // Function to animate the text
+            function animateText() {
+                let iteration = 0;
+                const targetText = originalText;
+                const textLength = targetText.length;
+                
+                // Clear the original text
+                blogHeading.textContent = '';
+                
+                // Create an interval for each character
+                const interval = setInterval(() => {
+                    let currentText = '';
+                    
+                    // For each character position
+                    for (let i = 0; i < textLength; i++) {
+                        // If we've passed this character's reveal time
+                        if (i < iteration) {
+                            // Show the actual character
+                            currentText += targetText.charAt(i);
+                        } else {
+                            // Show a random character for encryption effect
+                            currentText += getRandomChar();
+                        }
+                    }
+                    
+                    // Update the heading text
+                    blogHeading.textContent = currentText;
+                    
+                    // Move to the next character
+                    iteration += 1/3;
+                    
+                    // If we've revealed all characters, stop the interval
+                    if (iteration >= textLength) {
+                        clearInterval(interval);
+                        blogHeading.textContent = targetText;
+                    }
+                }, 30);
+            }
+            
+            // Start the animation when the page loads
+            setTimeout(animateText, 500);
+        });
+        
+        // Canvas-based 3D particle background
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        setCanvasSize();
+        window.addEventListener('resize', setCanvasSize);
+        
+        // Particle class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color');
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // Bounce off edges
+                if (this.x < 0 || this.x > canvas.width) {
+                    this.speedX = -this.speedX;
+                }
+                if (this.y < 0 || this.y > canvas.height) {
+                    this.speedY = -this.speedY;
+                }
+            }
+            
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        // Create particles
+        const particles = [];
+        const particleCount = 50;
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+        
+        // Draw connections between particles
+        function drawConnections() {
+            const connectionDistance = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--connection-distance'));
+            const connectionColor = getComputedStyle(document.documentElement).getPropertyValue('--connection-color');
+            
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        const opacity = 1 - distance / connectionDistance;
+                        ctx.strokeStyle = connectionColor.replace('0.2', opacity * 0.2);
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Update and draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            // Draw connections
+            drawConnections();
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const floatingElements = document.querySelectorAll('.floating-element');
+        const navbarLogo = document.getElementById('navbar-logo');
+        const footerLogo = document.getElementById('footer-logo');
+        
+        // Function to update logos based on theme
+        function updateLogos() {
+            if (body.classList.contains('orange-3d-theme')) {
+                // Orange theme
+                navbarLogo.src = 'CS LOGO Orange-01.png';
+                footerLogo.src = 'CS LOGO Orange-01.png';
+            } else {
+                // Light theme
+                navbarLogo.src = 'CS LOGO-01.png';
+                footerLogo.src = 'CS LOGO-01.png';
+            }
+        }
+        
+        // Initialize logos based on current theme
+        updateLogos();
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('orange-3d-theme');
+            
+            // Update particle colors based on theme
+            particles.forEach(particle => {
+                particle.color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color');
+            });
+            
+            // Show/hide floating elements based on theme
+            if (body.classList.contains('orange-3d-theme')) {
+                floatingElements.forEach(element => {
+                    element.style.display = 'block';
+                });
+            } else {
+                floatingElements.forEach(element => {
+                    element.style.display = 'none';
+                });
+            }
+            
+            // Update logos based on theme
+            updateLogos();
+        });
+        
+        // Blog data
+        const blogData = {
+  1: {
+    title: "Unlocking AI Potential with the Model Context Protocol (MCP)",
+    category: "Technology, AI",
+    author: "Mohammad Jaber",
+    authorTitle: "Software Engineer",
+    date: "Aug 24, 2025",
+    image: "mainmcp.jpeg",
+    content: "<h6>What is MCP and Why It Matters</h6><p>MCP was designed to address the challenge of <strong>fragmentation</strong>. Each time developers wanted to connect an application to a new service, they had to rebuild <strong>custom integrations</strong> and write unique adapters. MCP eliminates that redundancy by offering: <strong>One integration, many uses</strong>: A single MCP server can serve multiple applications or agents simultaneously. <strong>Clarity and transparency</strong>: Tools (actions), resources (data), and prompts (templates) are defined in a structured and predictable way. <strong>A broad ecosystem</strong>: MCP servers are already being developed to integrate with common services such as GitHub, Google Drive, CRMs, and internal APIs. For example, a company may want both its analytics dashboard and AI assistant to access sales data. Instead of building two separate connectors, the company can create one MCP server that exposes a “query sales report” tool, which both systems can use efficiently. When paired with <strong>Large Language Models (LLMs)</strong>, MCP demonstrates its full potential. While LLMs excel at reasoning and natural language interaction, they require structured and secure access to external systems. MCP provides this framework by enabling <strong>Structured discovery</strong>: LLM clients can automatically identify which tools and resources are available from an MCP server. <strong>Portability across models</strong>: Whether using proprietary models such as Claude or GPT, or open-source alternatives, MCP ensures consistent connectivity. <strong>Safer execution</strong>: Each tool includes defined parameters, scopes, and permissions, reducing the likelihood of unintended or harmful actions. <strong>Faster innovation</strong>: Developers can quickly add new capabilities by deploying MCP servers, which become instantly available to LLMs without additional integration work. For instance, a product manager working with an AI assistant in their IDE could rely on MCP to open GitHub pull requests, run code linters, or check Jira tickets—all without custom coding. The LLM simply discovers and uses the available tools via the MCP server. The advantages of MCP go beyond convenience: <strong>Increased productivity</strong>: Developers can deliver faster by reusing existing MCP servers for Slack, GitHub, databases, and other tools. <strong>Standardization of connections</strong>: A single protocol reduces the need for patchwork integrations across platforms. <strong>Enhanced safety</strong>: Clearly defined permissions and scopes create more predictable, secure agent behavior. <strong>Ecosystem growth</strong>: As more MCP servers are built and shared, organizations can adopt them to accelerate their AI initiatives. Strong <strong>security practices</strong> remain essential. Organizations must maintain <strong>allow-lists</strong> of trusted servers, require <strong>human approval</strong> for sensitive or high-risk actions, and keep comprehensive <strong>audit logs</strong> of all MCP interactions. Regular testing prevents vulnerabilities such as <strong>prompt injection</strong> or <strong>tool poisoning</strong>. A case study highlighted how an early adopter initially exposed financial data without strict scoping. After tightening permissions and requiring confirmation for financial queries, the risk was significantly reduced. Looking ahead, just as <strong>USB-C</strong> reshaped hardware connectivity, MCP has the potential to become the <strong>universal connector for AI</strong> systems. Thousands of MCP servers—from small projects to enterprise-grade platforms—will allow LLMs to seamlessly connect, retrieve context, and take meaningful actions across industries. In conclusion, the <strong>Model Context Protocol</strong> is more than a technical standard; it is a foundation for the future of AI. MCP simplifies integrations, reduces duplication, and fosters a sustainable development ecosystem. When combined with LLMs, MCP adds structure, safety, and power, unlocking new levels of efficiency and creativity. Organizations that adopt MCP today will be better prepared to build AI systems that are more capable, secure, and adaptable to future needs.</p>",
+    gallery: [
+      "mcp2.jpeg",
+      "mcp3.jpeg",
+      "mcp4.jpeg"
+    ]
+  },
+
+
+  2: {
+    title: "Mastering Kotlin Multiplatform: Code Sharing Across Platforms",
+    category: "Technology, Education",
+    author: "Mohammad Jaber",
+    authorTitle: "Software Engineer",
+    date: "Aug 24, 2025",
+    image: "mainkotlin.jpeg",
+    content: "<h6>What is Kotlin Multiplatform in General?</h6><p><strong>Kotlin Multiplatform (KMP)</strong> is not another 'write once, run anywhere' promise with compromises. Instead, it focuses on <strong>code sharing where it makes sense</strong>—such as business logic, data models, and networking—while leaving room for native UIs and platform APIs. This <strong>hybrid approach</strong> gives developers both <strong>efficiency</strong> and <strong>flexibility</strong>.</p><p><strong>Key advantages include:</strong></p><ul><li><strong>Shared business logic:</strong> Common code modules can be reused across Android, iOS, and web projects.</li><li><strong>Native performance:</strong> Apps still compile down to native binaries, with no extra runtime overhead.</li><li><strong>Flexible integration:</strong> Developers can gradually adopt KMP in existing projects without rewriting everything.</li><li><strong>Open ecosystem:</strong> A growing library of multiplatform frameworks supports networking, persistence, and UI layers.</li></ul><p><strong>Example:</strong> A fintech startup might implement its authentication, payment logic, and API integrations in a shared KMP module, while still building custom UIs for Android in Jetpack Compose and iOS in SwiftUI.</p>",
+    content2: "<h3>Kotlin Multiplatform with Mobile Development</h3><p>KMP shines especially in mobile projects where teams often duplicate effort between Android and iOS. With KMP:</p><ul><li>Android developers continue using Kotlin with Android Studio.</li><li>iOS developers consume the shared Kotlin code through CocoaPods or Swift Package Manager, integrating it directly into Xcode projects.</li></ul><p>Teams avoid mismatched implementations, ensuring both platforms stay in sync on core features.</p><p><strong>Example:</strong> Imagine building a ridesharing app. The booking logic, price calculation, and map API integration live in the KMP shared module, while the user interface for each platform remains native. This ensures <strong>consistency</strong> without sacrificing <strong>user experience</strong>.</p>",
+    content3: "<h3>Why Kotlin Multiplatform is a Game-Changer</h3><ul><li><strong>Efficiency:</strong> Teams save hundreds of development hours by sharing non-UI logic.</li><li><strong>Consistency:</strong> Shared modules eliminate the risk of platform drift (e.g., slightly different implementations of the same algorithm).</li><li><strong>Maintainability:</strong> Bugs can be fixed once in shared code instead of being patched separately on Android and iOS.</li><li><strong>Scalability:</strong> Larger teams can split responsibilities—shared module developers focus on business logic, while platform developers focus on UI and native features.</li></ul>",
+    content4: "<h3>Challenges and Considerations</h3><p>Like any framework, KMP comes with trade-offs:</p><ul><li><strong>UI remains platform-specific:</strong> KMP does not (yet) replace SwiftUI, Jetpack Compose, or React for web UIs.</li><li><strong>Learning curve:</strong> Developers new to Kotlin or multiplatform build tools may need time to adapt.</li><li><strong>Ecosystem maturity:</strong> While growing rapidly, not every popular library is fully multiplatform-ready.</li></ul><p><strong>Case study:</strong> An e-commerce company using KMP found that sharing API and data persistence code reduced duplication by 60%. However, they needed additional effort to integrate platform-specific payment SDKs that were not yet KMP-compatible.</p>",
+    content5: "<h3>Looking Ahead</h3><p>Kotlin Multiplatform is no longer an experiment—it is a <strong>production-ready solution</strong> adopted by companies like Netflix, Philips, and VMware. JetBrains continues to expand its capabilities, with Kotlin Multiplatform Mobile (KMM) gaining strong traction in the mobile development community. As tooling improves and the ecosystem matures, KMP is poised to become the default choice for cross-platform business logic sharing.</p>",
+    content6: "<h3>Conclusion</h3><p>Kotlin Multiplatform provides a <strong>practical balance</strong> between code sharing and native flexibility. It simplifies development by consolidating business logic into a single shared module while preserving the ability to create rich, platform-specific experiences. For organizations seeking <strong>efficiency</strong>, <strong>consistency</strong>, and long-term <strong>maintainability</strong>, KMP offers a clear path forward in cross-platform development.</p><p>Adopting KMP today means reducing duplicated effort, improving code quality, and future-proofing your applications across Android, iOS, desktop, and beyond.</p>",
+    gallery: [
+      "kotlin2.jpeg",
+      "kotlin3.jpeg"
+    ]
+  },
+
+  3: {
+    title: "No-Code Machine Learning: Building AI Without Programming",
+    category: "Technology, AI",
+    author: "Leen Omari",
+    authorTitle: "Computer Engineer",
+    date: "Aug 24, 2025",
+    image: "nocode_ml_main.webp",
+    content: "<h6>What is No-Code Machine Learning?</h6><p>Imagine being able to build an AI model that predicts sales, recognizes images, or even manages customer conversations — all without writing a single line of code. It may sound like science fiction or a task that requires teams of programmers and data scientists, but the reality is that the world is witnessing a new revolution called <strong>No-Code Machine Learning</strong>. This revolution is no longer limited to tech giants; it is now accessible to everyone — entrepreneurs, students, innovators, and even hobbyists. All you need is an idea and a user-friendly tool to begin your journey into the world of AI without programming. In recent years, <strong>Artificial Intelligence (AI)</strong> and <strong>Machine Learning (ML)</strong> have emerged as transformative technologies shaping industries and redefining how businesses operate. However, the complexity of coding and data science has often been a barrier. <strong>No-Code Machine Learning</strong> changes this dynamic by offering intuitive platforms that use Graphical User Interfaces (GUI) and Drag-and-Drop functionality, making it possible to design, train, and deploy ML models quickly and efficiently. The essence of <strong>No-Code Machine Learning</strong> lies in the <strong>Democratization of AI</strong>, making it available not just to experts but to anyone with a problem to solve or an idea to test. This opens the door for startups, enterprises, and individuals to transform concepts into functional AI models without massive investments in data science teams or complex infrastructures. These tools have diverse applications, from <strong>Data Analytics</strong> and sales forecasting, to <strong>Classification tasks</strong> like spam detection, <strong>Computer Vision</strong> for image and facial recognition, and <strong>Natural Language Processing (NLP)</strong> that powers intelligent Chatbots for customer service. Some of the most prominent platforms leading this movement include <strong>Google AutoML</strong>, which provides advanced model-building capabilities, <strong>Microsoft Azure ML Studio</strong>, offering a complete drag-and-drop environment, and <strong>Teachable Machine</strong> from Google, which is beginner-friendly for experimenting with images, text, and sounds. More advanced platforms like <strong>DataRobot</strong> deliver full Automated Machine Learning (AutoML) capabilities, while <strong>Lobe</strong> by Microsoft focuses on simplifying computer vision model training. These tools come with several advantages: <strong>ease of use, rapid implementation, reduced costs,</strong> and <strong>seamless integration</strong> with other applications. However, they also present challenges. Some limitations include less flexibility compared to traditional coding approaches, potential performance trade-offs, and concerns about security and privacy when working with sensitive data. The future of <strong>No-Code Machine Learning</strong> looks incredibly promising, especially as it merges with <strong>Generative AI</strong>, enabling organizations to innovate faster and develop smarter products and services. This trend is more than just a technical upgrade; it is a true revolution that shortens the gap between idea and implementation, empowering everyone — from entrepreneurs to large enterprises — to harness the power of AI with ease. No-Code Machine Learning is no longer a luxury or an optional tool; it has become a strategic necessity for <strong>innovation, growth,</strong> and rapid experimentation. And the best part is, it is available to you right now. Whether you are an entrepreneur seeking a competitive edge, a student eager to experiment with AI, or someone with a simple idea waiting to come to life, No-Code ML platforms give you the opportunity to start immediately. Don’t wait to become a coding expert to step into the AI era. Try one of these tools today — such as Teachable Machine or Google AutoML — and you’ll discover that building an intelligent model is simpler than you ever imagined.</p>",
+    gallery: [
+      "nocode_ml2.jpg",
+      "nocode_ml3.jpg",
+      "nocode_ml4.webp"
+    ]
+  },
+
+            // Event Blog Data
+            6: {
+                title: "IMPACT 2025",
+                category: "Events",
+                author: "IEEE CS TTU",
+                authorTitle: "Event Organizer",
+                date: "April 26, 2025",
+                image: "impact.jpeg",
+                content: "IMPACT 2025 was a groundbreaking congress in the Middle East focusing on VR, AR, XR, and Metaverse technologies. Organized by IEEE CS TTU with support from industry partners, the event brought together over 150 participants, including students, experts, and academics, to explore the future of immersive technologies through keynote speeches, technical sessions, and hands-on workshops.<br><br>The event featured sessions on Web3, VR, AR, MR, and XR fundamentals, as well as workshops on Metaverse Industry Applications, AI in Robotics, and VR in the Energy Sector. Special sessions covered Metaverse in Gaming, Engineering, and AI in Extended Reality.<br><br>A highlight of the event was the panel discussion on the future of the Metaverse, which brought together industry leaders and academics to share their insights on the potential impact of these technologies on various sectors. The event also included interactive booths, live activities, and networking opportunities, providing participants with a comprehensive experience of the latest developments in immersive technologies.",
+                gallery: [
+                    "impact.jpg",
+                    "impacct.jfif"
+                ]
+            },
+            7: {
+                title: "Orphan's Eftar",
+                category: "Events",
+                author: "IEEE CS TTU",
+                authorTitle: "Event Organizer",
+                date: "Mar 20, 2025",
+                image: "Orphan's Eftar.jpeg",
+                content: "The IEEE Computer Society – Tafila Technical University Student Branch, in collaboration with KAIRA Organization, organized a heartfelt charity event during Ramadan, bringing joy and memorable experiences to over 50 orphaned children through a special Iftar and recreational activities.<br><br>The event was held at AlRaya Mall in Amman, Jordan, where the children enjoyed a delicious Iftar meal followed by fun activities at the mall's amusement center. IEEE CS TTU members actively engaged with the children, playing games and creating a warm, welcoming atmosphere.<br><br>This charity event was part of IEEE CS TTU's commitment to social responsibility and community service. It provided an opportunity for members to give back to society and strengthen humanitarian values while making a positive impact on the lives of less fortunate children.<br><br>The success of this event has inspired plans for more charity initiatives in the future, further strengthening the bond between IEEE CS TTU and the local community.",
+                gallery: [
+                    "Orphan's Eftar.jpeg",
+                    "ramadan.png"
+                ]
+            },
+            8: {
+                title: "CS TECH BATTLE",
+                category: "Events",
+                author: "IEEE CS TTU",
+                authorTitle: "Event Organizer",
+                date: "Dec 23, 2024",
+                image: "tbattle.jpeg",
+                content: "The IEEE Computer Society at Tafila Technical University hosted the highly anticipated CS TECH BATTLE, a large-scale competition bringing together students from various computing disciplines to showcase their skills, knowledge, and teamwork. The event featured inspiring speeches, exciting game-based challenges, and a thrilling finale that celebrated innovation, collaboration, and academic excellence.<br><br>The competition included teams from six computing majors: Computer Engineering (CE), Intelligent Systems Engineering (ISE), Artificial Intelligence (AI), Cybersecurity (CYS), Computing Smart Devices (CSD), and Computer Information Systems (CIS). The teams competed in various games including 'The Bell', 'How Much Do You Know?', and 'Family Feud'.<br><br>After several rounds of intense competition, the CIS team emerged as the champions, demonstrating exceptional knowledge and teamwork. The event was sponsored by Morganite School, which also provided a special physics session with interactive demonstrations.<br><br>CS TECH BATTLE set a benchmark for future IEEE CS events at TTU, strengthening collaboration between students, faculty, and industry partners while fostering a spirit of healthy competition and academic excellence.",
+                gallery: [
+                    "tbattle.jpg",
+                    "techbattel1.jfif"
+                ]
+            },
+            9: {
+                title: "Field Trip and Advanced Data Analytics Workshop at SHAI for AI",
+                category: "Events",
+                author: "IEEE CS TTU",
+                authorTitle: "Event Organizer",
+                date: "Nov 07, 2024",
+                image: "shai.jpeg",
+                content: "IEEE CS TTU organized a field trip to SHAI for AI, a leading AI company in the Middle East, providing members with the opportunity to explore real-world applications of AI and data analytics. The visit introduced students to the company's work environment and practices, offering valuable insights into the AI industry.<br><br>The trip included a tour of SHAI's facilities, where members learned about the company's cutting-edge AI projects and innovations. This was followed by an advanced data analytics workshop, where industry experts provided hands-on training in sophisticated data analysis methods.<br><br>The workshop covered various aspects of data analytics, including data preprocessing, visualization, and machine learning techniques. Participants had the opportunity to work with real datasets and apply the concepts they learned in a practical setting.<br><br>This field trip and workshop enhanced members' understanding of AI's role in the region and inspired many to pursue careers in this rapidly growing field. IEEE CS TTU plans to organize more such events in collaboration with tech companies across Jordan to provide students with exposure to industry practices and networking opportunities.",
+                gallery: [
+                    "shai.jpg",
+                    "shai1.png"
+                ]
+            },
+            10: {
+                title: "Field Trip and PCB design workshop by Robotna",
+                category: "Events",
+                author: "IEEE CS TTU",
+                authorTitle: "Event Organizer",
+                date: "Sep 30, 2024",
+                image: "robotna.jpeg",
+                content: "IEEE CS TTU, in collaboration with Robotna, organized a field trip and hands-on PCB design workshop aimed at equipping engineering students with essential skills for electronics projects and future careers. The event provided participants with practical knowledge and experience in designing and fabricating printed circuit boards (PCBs).<br><br>The field trip began with a tour of Robotna's facilities, where students learned about the company's work in robotics and electronics. This was followed by a comprehensive workshop on PCB design fundamentals, including schematic capture, component placement, and routing techniques.<br><br>Under the guidance of industry experts from Robotna, participants had the opportunity to design their own PCBs using industry-standard software. The workshop emphasized real-world applications of PCB design in electronics projects, preparing students for future academic and professional endeavors.<br><br>This collaboration between IEEE CS TTU and Robotna highlights the chapter's commitment to providing practical, industry-relevant education to its members. The success of this event has led to plans for more workshops and field trips focused on emerging technologies and industry practices.",
+                gallery: [
+                    "robotna.jpg",
+                    "robotna.jpeg"
+                ]
+            }
+        };
+        
+        // Blog posts ordered by date (newest first)
+        const blogPosts = [
+            { id: 2, date: "Aug 11, 2025", isNew: true },
+            { id: 1, date: "Aug 5, 2025", isNew: true },
+            { id: 3, date: "Aug 1, 2025", isNew: true },
+            { id: 6, date: "April 26, 2025", isNew: false },
+            { id: 7, date: "Mar 20, 2025", isNew: false },
+            { id: 8, date: "Dec 23, 2024", isNew: false },
+            { id: 9, date: "Nov 07, 2024", isNew: false },
+            { id: 10, date: "Sep 30, 2024", isNew: false }
+        ];
+        
+        // Pagination variables
+        let currentPage = 1;
+        const postsPerPage = 3;
+        let filteredPosts = [...blogPosts]; // Initially show all posts
+        let currentCategory = 'all';
+        let currentSearchTerm = '';
+        
+        // Function to create blog card HTML
+        function createBlogCard(post) {
+            const blog = blogData[post.id];
+            const newBadge = post.isNew ? '<span class="new-badge">New</span>' : '';
+            
+            return `
+                <div class="blog-card" data-category="${blog.category}" data-id="${post.id}">
+                    <div class="blog-card-image" style="background-image: url('${blog.image}');">
+                        ${newBadge}
+                    </div>
+                    <div class="blog-card-content">
+                        <span class="blog-card-category">${blog.category}</span>
+                        <h3 class="blog-card-title">${blog.title}</h3>
+                        <p class="blog-card-excerpt">${blog.content.substring(0, 150)}...</p>
+                        <div class="blog-card-meta">
+                            <div class="blog-card-author">
+                                <img src="esawi2.jpg" alt="${blog.author}" class="author-avatar">
+                                <span>${blog.author}</span>
+                            </div>
+                            <div class="blog-card-date">
+                                <i class="far fa-calendar"></i>
+                                <span>${blog.date}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Function to render blog posts
+        function renderBlogPosts() {
+            const blogContainer = document.getElementById('blogContainer');
+            blogContainer.innerHTML = '';
+            
+            // Remove any existing future blogs note
+            const existingNote = document.querySelector('.future-blogs-note');
+            if (existingNote) {
+                existingNote.remove();
+            }
+            
+            // Calculate start and end indices for current page
+            const startIndex = (currentPage - 1) * postsPerPage;
+            const endIndex = startIndex + postsPerPage;
+            const postsToShow = filteredPosts.slice(startIndex, endIndex);
+            
+            // Render each blog post
+            postsToShow.forEach(post => {
+                blogContainer.innerHTML += createBlogCard(post);
+            });
+            
+            // Add click event listeners to blog cards
+            document.querySelectorAll('.blog-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const blogId = card.getAttribute('data-id');
+                    openBlogModal(parseInt(blogId));
+                });
+            });
+            
+            // Add future blogs note if this is the last page
+            const totalFilteredPages = Math.ceil(filteredPosts.length / postsPerPage);
+            if (currentPage === totalFilteredPages) {
+                const futureBlogsNote = document.createElement('div');
+                futureBlogsNote.className = 'future-blogs-note';
+                futureBlogsNote.innerHTML = `
+                    <h3><i class="fas fa-info-circle"></i> More Blogs Coming Soon</h3>
+                    <p>We're currently working on creating more insightful blog content. Check back regularly for new posts on technology, events, education, and achievements!</p>
+                `;
+                blogContainer.after(futureBlogsNote);
+            }
+            
+            // Update pagination
+            updatePagination();
+        }
+        
+        // Function to update pagination
+        function updatePagination() {
+            const pageLinks = document.querySelectorAll('.page-link');
+            const pageInfo = document.querySelector('.page-info');
+            
+            // Update total pages based on filtered posts
+            const totalFilteredPages = Math.ceil(filteredPosts.length / postsPerPage);
+            pageInfo.textContent = `Page ${currentPage} of ${totalFilteredPages}`;
+            
+            // Update active page link
+            pageLinks.forEach(link => {
+                const page = link.getAttribute('data-page');
+                if (page === currentPage.toString()) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+                
+                // Disable prev/next buttons if at first/last page
+                if (page === 'prev' && currentPage === 1) {
+                    link.style.opacity = '0.5';
+                    link.style.pointerEvents = 'none';
+                } else if (page === 'next' && currentPage === totalFilteredPages) {
+                    link.style.opacity = '0.5';
+                    link.style.pointerEvents = 'none';
+                } else {
+                    link.style.opacity = '1';
+                    link.style.pointerEvents = 'auto';
+                }
+            });
+        }
+        
+        // Function to filter posts
+        function filterPosts() {
+            // Start with all posts
+            filteredPosts = [...blogPosts];
+            
+            // Apply category filter
+            if (currentCategory !== 'all') {
+                filteredPosts = filteredPosts.filter(post => {
+                    const blog = blogData[post.id];
+                    // Check if the category matches (supports multiple categories)
+                    return blog.category.toLowerCase().includes(currentCategory.toLowerCase());
+                });
+            }
+            
+            // Apply search filter
+            if (currentSearchTerm) {
+                const searchTerm = currentSearchTerm.toLowerCase();
+                filteredPosts = filteredPosts.filter(post => {
+                    const blog = blogData[post.id];
+                    return blog.title.toLowerCase().includes(searchTerm) || 
+                           blog.content.toLowerCase().includes(searchTerm);
+                });
+            }
+            
+            // Reset to first page when filtering
+            currentPage = 1;
+            renderBlogPosts();
+        }
+        
+        // Category filter functionality
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update current category
+                currentCategory = btn.getAttribute('data-category');
+                
+                // Apply filters
+                filterPosts();
+            });
+        });
+        
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        
+        function performSearch() {
+            currentSearchTerm = searchInput.value.trim();
+            filterPosts();
+        }
+        
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        // Pagination functionality
+        const pageLinks = document.querySelectorAll('.page-link');
+        pageLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const page = link.getAttribute('data-page');
+                const totalFilteredPages = Math.ceil(filteredPosts.length / postsPerPage);
+                
+                if (page === 'prev' && currentPage > 1) {
+                    currentPage--;
+                    renderBlogPosts();
+                } else if (page === 'next' && currentPage < totalFilteredPages) {
+                    currentPage++;
+                    renderBlogPosts();
+                } else if (!isNaN(page)) {
+                    currentPage = parseInt(page);
+                    renderBlogPosts();
+                }
+            });
+        });
+        
+        // Blog modal functionality
+        const blogModal = document.getElementById('blogModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalImage = document.getElementById('modalImage');
+        const modalCategory = document.getElementById('modalCategory');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalAuthorName = document.getElementById('modalAuthorName');
+        const modalAuthorTitle = document.getElementById('modalAuthorTitle');
+        const modalAuthorAvatar = document.getElementById('modalAuthorAvatar');
+        const modalDate = document.getElementById('modalDate');
+        const modalContent = document.getElementById('modalContent');
+        const modalGallery = document.getElementById('modalGallery');
+        
+        // Function to open blog modal
+        function openBlogModal(blogId) {
+            const blog = blogData[blogId];
+            
+            if (blog) {
+                // Populate modal with blog data
+                modalImage.style.backgroundImage = `url('${blog.image}')`;
+                modalCategory.textContent = blog.category;
+                modalTitle.textContent = blog.title;
+                modalAuthorName.textContent = blog.author;
+                modalAuthorTitle.textContent = blog.authorTitle;
+                modalDate.textContent = blog.date;
+                modalContent.innerHTML = blog.content;
+                
+                // Populate gallery
+                modalGallery.innerHTML = '';
+                if (blog.gallery && blog.gallery.length > 0) {
+                    blog.gallery.forEach(imageUrl => {
+                        const img = document.createElement('div');
+                        img.className = 'gallery-image';
+                        img.style.backgroundImage = `url('${imageUrl}')`;
+                        modalGallery.appendChild(img);
+                    });
+                } else {
+                    modalGallery.style.display = 'none';
+                }
+                
+                // Show modal
+                blogModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // Close modal
+        modalClose.addEventListener('click', closeModal);
+        
+        function closeModal() {
+            blogModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside the modal content
+        window.addEventListener('click', (e) => {
+            if (e.target === blogModal) {
+                closeModal();
+            }
+        });
+        
+        // Initialize the page
+        renderBlogPosts();
+    </script>
+</body>
+</html>
