@@ -1835,39 +1835,43 @@ function createBlogCard(post) {
         const modalContent = document.getElementById('modalContent');
         const modalGallery = document.getElementById('modalGallery');
         
-        // Function to open blog modal
-        function openBlogModal(blogId) {
-            const blog = blogData[blogId];
-            
-            if (blog) {
-                // Populate modal with blog data
-                modalImage.style.backgroundImage = `url('${blog.image}')`;
-                modalCategory.textContent = blog.category;
-                modalTitle.textContent = blog.title;
-                modalAuthorName.textContent = blog.author;
-                modalAuthorTitle.textContent = blog.authorTitle;
-                modalDate.textContent = blog.date;
-                modalContent.innerHTML = blog.content;
-                
-                // Populate gallery
-                modalGallery.innerHTML = '';
-                if (blog.gallery && blog.gallery.length > 0) {
-                    blog.gallery.forEach(imageUrl => {
-                        const img = document.createElement('div');
-                        img.className = 'gallery-image';
-                        img.style.backgroundImage = `url('${imageUrl}')`;
-                        modalGallery.appendChild(img);
-                    });
-                } else {
-                    modalGallery.style.display = 'none';
-                }
-                
-                // Show modal
-                blogModal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            }
+       // Function to open blog modal
+function openBlogModal(blogId) {
+    const blog = blogData[blogId];
+    
+    if (blog) {
+        // Populate modal with blog data
+        modalImage.style.backgroundImage = `url('${blog.image}')`;
+        modalCategory.textContent = blog.category;
+        modalTitle.textContent = blog.title;
+        modalAuthorName.textContent = blog.author;
+        modalAuthorTitle.textContent = blog.authorTitle;
+        modalDate.textContent = blog.date;
+        
+        // Set author image
+        const authorImage = blog.authorImage || 'esawi2.jpg';
+        modalAuthorAvatar.src = authorImage;
+        
+        modalContent.innerHTML = blog.content;
+        
+        // Populate gallery
+        modalGallery.innerHTML = '';
+        if (blog.gallery && blog.gallery.length > 0) {
+            blog.gallery.forEach(imageUrl => {
+                const img = document.createElement('div');
+                img.className = 'gallery-image';
+                img.style.backgroundImage = `url('${imageUrl}')`;
+                modalGallery.appendChild(img);
+            });
+        } else {
+            modalGallery.style.display = 'none';
         }
         
+        // Show modal
+        blogModal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+}
         // Close modal
         modalClose.addEventListener('click', closeModal);
         
