@@ -3338,6 +3338,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
     </script>
+    <!-- Add this before closing </body> -->
+<script>
+    // Console Easter Egg
+    console.log("%c👋 Hello curious developer!", "color: #00629B; font-size: 20px; font-weight: bold;");
+    console.log("%cType ieee.secret() in the console to unlock a special feature!", "color: #FF6900; font-size: 14px;");
+    
+    window.ieee = {
+        secret: function() {
+            console.log("%c🎉 You found the secret! Here's an ASCII treat:", "color: #00629B; font-size: 16px; font-weight: bold;");
+            console.log(`
+    %c    ____  _____ ____     _     _____ ____  
+    %c   |  _ \\| ____|  _ \\   | |   | ____|  _ \\ 
+    %c   | |_) |  _| | |_) |  | |   |  _| | |_) |
+    %c   |  _ <| |___|  _ <   | |___| |___|  _ < 
+    %c   |_| \\_\\_____|_| \\_\\  |_____|_____|_| \\_\\
+    
+    %c   Tafila Technical University Chapter
+            `, 
+            "color: #00629B;", "color: #00629B;", "color: #00629B;", "color: #00629B;", 
+            "color: #00629B;", "color: #FF6900;");
+            
+            // Create a temporary floating message on the page
+            const msg = document.createElement('div');
+            msg.style.cssText = 'position:fixed; top:20px; right:20px; background:#00629B; color:white; padding:15px; border-radius:5px; z-index:10000; animation:fadeIn 0.5s;';
+            msg.innerHTML = '🎉 Console Easter Egg Activated! You\'re a true explorer!';
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 3000);
+        }
+    };
+    </script>
     <!-- Add this right before the closing </body> tag -->
 <!-- Hidden Easter Egg Game -->
 <div id="easterEggGame" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;">
