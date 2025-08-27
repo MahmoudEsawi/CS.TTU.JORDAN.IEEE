@@ -1201,13 +1201,20 @@
                 <span class="blog-modal-category" id="modalCategory"></span>
                 <h2 class="blog-modal-title" id="modalTitle"></h2>
                 <div class="blog-modal-meta">
-                    <div class="blog-modal-author">
-                        <img src="esawi2.jpg" alt="Author" class="author-avatar" id="modalAuthorAvatar">
-                        <div class="author-info">
-                            <span class="author-name" id="modalAuthorName"></span>
-                            <span class="author-title" id="modalAuthorTitle"></span>
-                        </div>
-                    </div>
+                    <!-- Replace the existing modal author avatar with this -->
+<div class="blog-modal-author">
+    <div class="author-avatar-edit" id="modalAuthorAvatarContainer">
+        <img src="esawi2.jpg" alt="Author" class="author-avatar" id="modalAuthorAvatar">
+        <button class="edit-avatar-btn" id="editAvatarBtn">
+            <i class="fas fa-camera"></i>
+        </button>
+        <input type="file" class="avatar-upload-input" id="avatarUploadInput" accept="image/*">
+    </div>
+    <div class="author-info">
+        <span class="author-name" id="modalAuthorName"></span>
+        <span class="author-title" id="modalAuthorTitle"></span>
+    </div>
+</div>
                     <div class="blog-modal-date">
                         <i class="far fa-calendar"></i>
                         <span id="modalDate"></span>
@@ -1889,6 +1896,45 @@ function openBlogModal(blogId) {
         
         // Initialize the page
         renderBlogPosts();
+        // Add this code after your existing script
+// Modal avatar upload functionality
+const editAvatarBtn = document.getElementById('editAvatarBtn');
+const avatarUploadInput = document.getElementById('avatarUploadInput');
+
+if (editAvatarBtn && avatarUploadInput) {
+    editAvatarBtn.addEventListener('click', () => {
+        avatarUploadInput.click();
+    });
+
+    avatarUploadInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const modalAuthorAvatar = document.getElementById('modalAuthorAvatar');
+                if (modalAuthorAvatar) {
+                    modalAuthorAvatar.src = e.target.result;
+                    
+                    // Find the current blog post and update its author image
+                    const modalAuthorName = document.getElementById('modalAuthorName');
+                    if (modalAuthorName) {
+                        const currentAuthor = modalAuthorName.textContent;
+                        for (const postId in blogData) {
+                            if (blogData[postId].author === currentAuthor) {
+                                blogData[postId].authorImage = e.target.result;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // Re-render blog posts to update the author image
+                    renderBlogPosts();
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
     </script>
 </body>
 </html>
