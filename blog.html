@@ -14,7 +14,7 @@
             --accent-color: #5C87A2;
             --light-color: #F8F9FA;
             --dark-color: #212529;
-            --text-color: #333333;
+          --text-color: #333333;
             --text-light: #6C757D;
             --bg-color: #FFFFFF;
             --card-bg: #FFFFFF;
@@ -214,7 +214,7 @@
         .blog-hero {
             background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             color: white;
-            padding: 120px 0 80px;
+            padding: 400px 0 ;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -278,8 +278,6 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            justify-content: center;
-            width: 100%;
         }
         .category-btn {
             padding: 12px 24px;
@@ -333,9 +331,7 @@
         }
         .search-box {
             position: relative;
-            width: 100%;
-            max-width: 300px;
-            margin: 0 auto;
+            width: 300px;
         }
         .search-box input {
             width: 100%;
@@ -378,7 +374,7 @@
         /* Blog Cards */
         .blog-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 30px;
             margin-bottom: 50px;
         }
@@ -481,36 +477,23 @@
         .pagination-container {
             display: flex;
             justify-content: center;
-            align-items: center;
             margin-top: 50px;
-            width: 100%;
         }
         .pagination {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
+            gap: 10px;
         }
         .page-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 40px;
-            height: 40px;
-            padding: 0 12px;
+            padding: 12px 24px;
             background-color: var(--card-bg);
             color: var(--text-color);
-            border-radius: 50%;
+            border-radius: 30px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid var(--border-color);
             position: relative;
             overflow: hidden;
-            text-align: center;
         }
         
         .page-link::before {
@@ -557,9 +540,6 @@
             padding: 0 15px;
             color: var(--text-light);
             font-size: 0.9rem;
-            width: 100%;
-            text-align: center;
-            margin-top: 15px;
         }
         /* Blog Detail Modal */
         .blog-modal {
@@ -612,12 +592,12 @@
         }
         .blog-modal-image {
             width: 100%;
-            height: 300px;
+            height: 400px;
             background-size: cover;
             background-position: center;
         }
         .blog-modal-body {
-            padding: 30px 20px;
+            padding: 40px;
         }
         .blog-modal-category {
             display: inline-block;
@@ -634,7 +614,7 @@
             color: var(--secondary-color);
         }
         .blog-modal-title {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--primary-color);
             margin-bottom: 20px;
@@ -645,8 +625,8 @@
         }
         .blog-modal-meta {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 1px solid var(--border-color);
@@ -696,11 +676,11 @@
         }
         .gallery-images {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
         }
         .gallery-image {
-            height: 120px;
+            height: 150px;
             background-size: cover;
             background-position: center;
             border-radius: 10px;
@@ -785,7 +765,7 @@
             }
             
             .blog-container {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             }
         }
         @media (max-width: 768px) {
@@ -799,7 +779,7 @@
             }
             
             .blog-hero {
-                padding: 100px 0 60px;
+                padding: 300px 0 60px;
             }
             
             .blog-hero h1 {
@@ -820,7 +800,7 @@
             }
             
             .blog-modal-body {
-                padding: 20px 15px;
+                padding: 30px 20px;
             }
             
             .blog-modal-title {
@@ -828,7 +808,18 @@
             }
             
             .gallery-images {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .pagination {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-link {
+                min-width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
             }
             
             .modal-close {
@@ -851,21 +842,15 @@
             }
             
             .blog-modal-image {
-                height: 200px;
+                height: 250px;
             }
             
             .page-info {
-                font-size: 0.8rem;
+                display: none;
             }
             
             .modal-close {
                 top: 60px;
-            }
-            
-            .page-link {
-                min-width: 35px;
-                height: 35px;
-                font-size: 0.9rem;
             }
         }
         
@@ -1460,13 +1445,14 @@
     authorTitle: "Software Engineer",
     date: "Aug 24, 2025",
     image: "mainmcp.jpeg",
-    content: "<h6>What is MCP and Why It Matters</h6><p>MCP was designed to address the challenge of <strong>fragmentation</strong>. Each time developers wanted to connect an application to a new service, they had to rebuild <strong>custom integrations</strong> and write unique adapters. MCP eliminates that redundancy by offering: <strong>One integration, many uses</strong>: A single MCP server can serve multiple applications or agents simultaneously. <strong>Clarity and transparency</strong>: Tools (actions), resources (data), and prompts (templates) are defined in a structured and predictable way. <strong>A broad ecosystem</strong>: MCP servers are already being developed to integrate with common services such as GitHub, Google Drive, CRMs, and internal APIs. For example, a company may want both its analytics dashboard and AI assistant to access sales data. Instead of building two separate connectors, the company can create one MCP server that exposes a "query sales report" tool, which both systems can use efficiently. When paired with <strong>Large Language Models (LLMs)</strong>, MCP demonstrates its full potential. While LLMs excel at reasoning and natural language interaction, they require structured and secure access to external systems. MCP provides this framework by enabling <strong>Structured discovery</strong>: LLM clients can automatically identify which tools and resources are available from an MCP server. <strong>Portability across models</strong>: Whether using proprietary models such as Claude or GPT, or open-source alternatives, MCP ensures consistent connectivity. <strong>Safer execution</strong>: Each tool includes defined parameters, scopes, and permissions, reducing the likelihood of unintended or harmful actions. <strong>Faster innovation</strong>: Developers can quickly add new capabilities by deploying MCP servers, which become instantly available to LLMs without additional integration work. For instance, a product manager working with an AI assistant in their IDE could rely on MCP to open GitHub pull requests, run code linters, or check Jira tickets—all without custom coding. The LLM simply discovers and uses the available tools via the MCP server. The advantages of MCP go beyond convenience: <strong>Increased productivity</strong>: Developers can deliver faster by reusing existing MCP servers for Slack, GitHub, databases, and other tools. <strong>Standardization of connections</strong>: A single protocol reduces the need for patchwork integrations across platforms. <strong>Enhanced safety</strong>: Clearly defined permissions and scopes create more predictable, secure agent behavior. <strong>Ecosystem growth</strong>: As more MCP servers are built and shared, organizations can adopt them to accelerate their AI initiatives. Strong <strong>security practices</strong> remain essential. Organizations must maintain <strong>allow-lists</strong> of trusted servers, require <strong>human approval</strong> for sensitive or high-risk actions, and keep comprehensive <strong>audit logs</strong> of all MCP interactions. Regular testing prevents vulnerabilities such as <strong>prompt injection</strong> or <strong>tool poisoning</strong>. A case study highlighted how an early adopter initially exposed financial data without strict scoping. After tightening permissions and requiring confirmation for financial queries, the risk was significantly reduced. Looking ahead, just as <strong>USB-C</strong> reshaped hardware connectivity, MCP has the potential to become the <strong>universal connector for AI</strong> systems. Thousands of MCP servers—from small projects to enterprise-grade platforms—will allow LLMs to seamlessly connect, retrieve context, and take meaningful actions across industries. In conclusion, the <strong>Model Context Protocol</strong> is more than a technical standard; it is a foundation for the future of AI. MCP simplifies integrations, reduces duplication, and fosters a sustainable development ecosystem. When combined with LLMs, MCP adds structure, safety, and power, unlocking new levels of efficiency and creativity. Organizations that adopt MCP today will be better prepared to build AI systems that are more capable, secure, and adaptable to future needs.</p>",
+    content: "<h6>What is MCP and Why It Matters</h6><p>MCP was designed to address the challenge of <strong>fragmentation</strong>. Each time developers wanted to connect an application to a new service, they had to rebuild <strong>custom integrations</strong> and write unique adapters. MCP eliminates that redundancy by offering: <strong>One integration, many uses</strong>: A single MCP server can serve multiple applications or agents simultaneously. <strong>Clarity and transparency</strong>: Tools (actions), resources (data), and prompts (templates) are defined in a structured and predictable way. <strong>A broad ecosystem</strong>: MCP servers are already being developed to integrate with common services such as GitHub, Google Drive, CRMs, and internal APIs. For example, a company may want both its analytics dashboard and AI assistant to access sales data. Instead of building two separate connectors, the company can create one MCP server that exposes a “query sales report” tool, which both systems can use efficiently. When paired with <strong>Large Language Models (LLMs)</strong>, MCP demonstrates its full potential. While LLMs excel at reasoning and natural language interaction, they require structured and secure access to external systems. MCP provides this framework by enabling <strong>Structured discovery</strong>: LLM clients can automatically identify which tools and resources are available from an MCP server. <strong>Portability across models</strong>: Whether using proprietary models such as Claude or GPT, or open-source alternatives, MCP ensures consistent connectivity. <strong>Safer execution</strong>: Each tool includes defined parameters, scopes, and permissions, reducing the likelihood of unintended or harmful actions. <strong>Faster innovation</strong>: Developers can quickly add new capabilities by deploying MCP servers, which become instantly available to LLMs without additional integration work. For instance, a product manager working with an AI assistant in their IDE could rely on MCP to open GitHub pull requests, run code linters, or check Jira tickets—all without custom coding. The LLM simply discovers and uses the available tools via the MCP server. The advantages of MCP go beyond convenience: <strong>Increased productivity</strong>: Developers can deliver faster by reusing existing MCP servers for Slack, GitHub, databases, and other tools. <strong>Standardization of connections</strong>: A single protocol reduces the need for patchwork integrations across platforms. <strong>Enhanced safety</strong>: Clearly defined permissions and scopes create more predictable, secure agent behavior. <strong>Ecosystem growth</strong>: As more MCP servers are built and shared, organizations can adopt them to accelerate their AI initiatives. Strong <strong>security practices</strong> remain essential. Organizations must maintain <strong>allow-lists</strong> of trusted servers, require <strong>human approval</strong> for sensitive or high-risk actions, and keep comprehensive <strong>audit logs</strong> of all MCP interactions. Regular testing prevents vulnerabilities such as <strong>prompt injection</strong> or <strong>tool poisoning</strong>. A case study highlighted how an early adopter initially exposed financial data without strict scoping. After tightening permissions and requiring confirmation for financial queries, the risk was significantly reduced. Looking ahead, just as <strong>USB-C</strong> reshaped hardware connectivity, MCP has the potential to become the <strong>universal connector for AI</strong> systems. Thousands of MCP servers—from small projects to enterprise-grade platforms—will allow LLMs to seamlessly connect, retrieve context, and take meaningful actions across industries. In conclusion, the <strong>Model Context Protocol</strong> is more than a technical standard; it is a foundation for the future of AI. MCP simplifies integrations, reduces duplication, and fosters a sustainable development ecosystem. When combined with LLMs, MCP adds structure, safety, and power, unlocking new levels of efficiency and creativity. Organizations that adopt MCP today will be better prepared to build AI systems that are more capable, secure, and adaptable to future needs.</p>",
     gallery: [
       "mcp2.jpeg",
       "mcp3.jpeg",
       "mcp4.jpeg"
     ]
   },
+
 
   2: {
     title: "Mastering Kotlin Multiplatform: Code Sharing Across Platforms",
@@ -1486,6 +1472,7 @@
       "kotlin3.jpeg"
     ]
   },
+
   3: {
     title: "No-Code Machine Learning: Building AI Without Programming",
     category: "Technology, AI",
@@ -1493,13 +1480,14 @@
     authorTitle: "Computer Engineer",
     date: "Aug 24, 2025",
     image: "nocode_ml_main.webp",
-    content: "<h6>What is No-Code Machine Learning?</h6><p>Imagine being able to build an AI model that predicts sales, recognizes images, or even manages customer conversations — all without writing a single line of code. It may sound like science fiction or a task that requires teams of programmers and data scientists, but the reality is that the world is witnessing a new revolution called <strong>No-Code Machine Learning</strong>. This revolution is no longer limited to tech giants; it is now accessible to everyone — entrepreneurs, students, innovators, and even hobbyists. All you need is an idea and a user-friendly tool to begin your journey into the world of AI without programming. In recent years, <strong>Artificial Intelligence (AI)</strong> and <strong>Machine Learning (ML)</strong> have emerged as transformative technologies shaping industries and redefining how businesses operate. However, the complexity of coding and data science has often been a barrier. <strong>No-Code Machine Learning</strong> changes this dynamic by offering intuitive platforms that use Graphical User Interfaces (GUI) and Drag-and-Drop functionality, making it possible to design, train, and deploy ML models quickly and efficiently. The essence of <strong>No-Code Machine Learning</strong> lies in the <strong>Democratization of AI</strong>, making it available not just to experts but to anyone with a problem to solve or an idea to test. This opens the door for startups, enterprises, and individuals to transform concepts into functional AI models without massive investments in data science teams or complex infrastructures. These tools have diverse applications, from <strong>Data Analytics</strong> and sales forecasting, to <strong>Classification tasks</strong> like spam detection, <strong>Computer Vision</strong> for image and facial recognition, and <strong>Natural Language Processing (NLP)</strong> that powers intelligent Chatbots for customer service. Some of the most prominent platforms leading this movement include <strong>Google AutoML</strong>, which provides advanced model-building capabilities, <strong>Microsoft Azure ML Studio</strong>, offering a complete drag-and-drop environment, and <strong>Teachable Machine</strong> from Google, which is beginner-friendly for experimenting with images, text, and sounds. More advanced platforms like <strong>DataRobot</strong> deliver full Automated Machine Learning (AutoML) capabilities, while <strong>Lobe</strong> by Microsoft focuses on simplifying computer vision model training. These tools come with several advantages: <strong>ease of use, rapid implementation, reduced costs,</strong> and <strong>seamless integration</strong> with other applications. However, they also present challenges. Some limitations include less flexibility compared to traditional coding approaches, potential performance trade-offs, and concerns about security and privacy when working with sensitive data. The future of <strong>No-Code Machine Learning</strong> looks incredibly promising, especially as it merges with <strong>Generative AI</strong>, enabling organizations to innovate faster and develop smarter products and services. This trend is more than just a technical upgrade; it is a true revolution that shortens the gap between idea and implementation, empowering everyone — from entrepreneurs to large enterprises — to harness the power of AI with ease. No-Code Machine Learning is no longer a luxury or an optional tool; it has become a strategic necessity for <strong>innovation, growth,</strong> and rapid experimentation. And the best part is, it is available to you right now. Whether you are an entrepreneur seeking a competitive edge, a student eager to experiment with AI, or someone with a simple idea waiting to come to life, No-Code ML platforms give you the opportunity to start immediately. Don't wait to become a coding expert to step into the AI era. Try one of these tools today — such as Teachable Machine or Google AutoML — and you'll discover that building an intelligent model is simpler than you ever imagined.</p>",
+    content: "<h6>What is No-Code Machine Learning?</h6><p>Imagine being able to build an AI model that predicts sales, recognizes images, or even manages customer conversations — all without writing a single line of code. It may sound like science fiction or a task that requires teams of programmers and data scientists, but the reality is that the world is witnessing a new revolution called <strong>No-Code Machine Learning</strong>. This revolution is no longer limited to tech giants; it is now accessible to everyone — entrepreneurs, students, innovators, and even hobbyists. All you need is an idea and a user-friendly tool to begin your journey into the world of AI without programming. In recent years, <strong>Artificial Intelligence (AI)</strong> and <strong>Machine Learning (ML)</strong> have emerged as transformative technologies shaping industries and redefining how businesses operate. However, the complexity of coding and data science has often been a barrier. <strong>No-Code Machine Learning</strong> changes this dynamic by offering intuitive platforms that use Graphical User Interfaces (GUI) and Drag-and-Drop functionality, making it possible to design, train, and deploy ML models quickly and efficiently. The essence of <strong>No-Code Machine Learning</strong> lies in the <strong>Democratization of AI</strong>, making it available not just to experts but to anyone with a problem to solve or an idea to test. This opens the door for startups, enterprises, and individuals to transform concepts into functional AI models without massive investments in data science teams or complex infrastructures. These tools have diverse applications, from <strong>Data Analytics</strong> and sales forecasting, to <strong>Classification tasks</strong> like spam detection, <strong>Computer Vision</strong> for image and facial recognition, and <strong>Natural Language Processing (NLP)</strong> that powers intelligent Chatbots for customer service. Some of the most prominent platforms leading this movement include <strong>Google AutoML</strong>, which provides advanced model-building capabilities, <strong>Microsoft Azure ML Studio</strong>, offering a complete drag-and-drop environment, and <strong>Teachable Machine</strong> from Google, which is beginner-friendly for experimenting with images, text, and sounds. More advanced platforms like <strong>DataRobot</strong> deliver full Automated Machine Learning (AutoML) capabilities, while <strong>Lobe</strong> by Microsoft focuses on simplifying computer vision model training. These tools come with several advantages: <strong>ease of use, rapid implementation, reduced costs,</strong> and <strong>seamless integration</strong> with other applications. However, they also present challenges. Some limitations include less flexibility compared to traditional coding approaches, potential performance trade-offs, and concerns about security and privacy when working with sensitive data. The future of <strong>No-Code Machine Learning</strong> looks incredibly promising, especially as it merges with <strong>Generative AI</strong>, enabling organizations to innovate faster and develop smarter products and services. This trend is more than just a technical upgrade; it is a true revolution that shortens the gap between idea and implementation, empowering everyone — from entrepreneurs to large enterprises — to harness the power of AI with ease. No-Code Machine Learning is no longer a luxury or an optional tool; it has become a strategic necessity for <strong>innovation, growth,</strong> and rapid experimentation. And the best part is, it is available to you right now. Whether you are an entrepreneur seeking a competitive edge, a student eager to experiment with AI, or someone with a simple idea waiting to come to life, No-Code ML platforms give you the opportunity to start immediately. Don’t wait to become a coding expert to step into the AI era. Try one of these tools today — such as Teachable Machine or Google AutoML — and you’ll discover that building an intelligent model is simpler than you ever imagined.</p>",
     gallery: [
       "nocode_ml2.jpg",
       "nocode_ml3.jpg",
       "nocode_ml4.webp"
     ]
   },
+
             // Event Blog Data
             6: {
                 title: "IMPACT 2025",
@@ -1799,16 +1787,7 @@
                 modalAuthorName.textContent = blog.author;
                 modalAuthorTitle.textContent = blog.authorTitle;
                 modalDate.textContent = blog.date;
-                
-                // Combine all content sections
-                let fullContent = blog.content || '';
-                if (blog.content2) fullContent += blog.content2;
-                if (blog.content3) fullContent += blog.content3;
-                if (blog.content4) fullContent += blog.content4;
-                if (blog.content5) fullContent += blog.content5;
-                if (blog.content6) fullContent += blog.content6;
-                
-                modalContent.innerHTML = fullContent;
+                modalContent.innerHTML = blog.content;
                 
                 // Populate gallery
                 modalGallery.innerHTML = '';
