@@ -3339,191 +3339,234 @@ document.addEventListener('DOMContentLoaded', function() {
 });
     </script>
     <!-- Add this before closing </body> -->
-<script>
-    // IEEE CS ASCII Art Easter Egg
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log("%c👋 Welcome to IEEE Computer Society TTU!", "color: #00629B; font-size: 20px; font-weight: bold;");
-        console.log("%cType ieee.cs() in the console to reveal the CS letters!", "color: #FF6900; font-size: 14px;");
+<div id="csVisualization" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center; flex-direction:column;">
+    <div style="color:white; text-align:center; margin-bottom:20px;">
+        <h2>IEEE Computer Society</h2>
+        <p>Interactive CS Visualization</p>
+    </div>
     
-        window.ieee = {
-            cs: function() {
-                // Clear console for better visibility
-                console.clear();
-                
-                // Display CS ASCII art with colors
-                console.log("%c    _______ _______ ", "color: #00629B; font-size: 24px; font-weight: bold;");
-                console.log("%c   | C     | S     |", "color: #00629B; font-size: 24px; font-weight: bold;");
-                console.log("%c   |   C   |   S   |", "color: #00629B; font-size: 24px; font-weight: bold;");
-                console.log("%c   |     C |     S |", "color: #00629B; font-size: 24px; font-weight: bold;");
-                console.log("%c   | CCCCC | SSSSS |", "color: #FF6900; font-size: 24px; font-weight: bold;");
-                console.log("%c   |_______|_______|", "color: #00629B; font-size: 24px; font-weight: bold;");
-                console.log("%c", "color: transparent; font-size: 10px;"); // Empty line for spacing
-                console.log("%cComputer Society - Tafila Technical University", "color: #5C87A2; font-size: 18px; font-weight: bold;");
-                console.log("%cEmpowering the next generation of computing professionals", "color: #5C87A2; font-size: 14px;");
-                
-                // Create floating CS letters animation on the page
-                createCSAnimation();
-                
-                // Show temporary notification
-                showNotification("🎉 CS Letters Revealed! Check the console for the full display!");
-            }
-        };
+    <svg width="600" height="400" viewBox="0 0 600 400" style="border:2px solid #00629B; border-radius:10px; background:rgba(0,0,0,0.5);">
+        <!-- Background -->
+        <rect width="600" height="400" fill="rgba(0,0,0,0.3)" />
         
-        function createCSAnimation() {
-            // Create container for CS letters
-            const container = document.createElement('div');
-            container.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999;';
-            document.body.appendChild(container);
+        <!-- Grid lines for visual appeal -->
+        <g stroke="rgba(255,255,255,0.1)" stroke-width="1">
+            <line x1="0" y1="100" x2="600" y2="100" />
+            <line x1="0" y1="200" x2="600" y2="200" />
+            <line x1="0" y1="300" x2="600" y2="300" />
+            <line x1="150" y1="0" x2="150" y2="400" />
+            <line x1="300" y1="0" x2="300" y2="400" />
+            <line x1="450" y1="0" x2="450" y2="400" />
+        </g>
+        
+        <!-- C Letter -->
+        <g id="cLetter" transform="translate(100, 50)">
+            <!-- Top horizontal line -->
+            <line x1="0" y1="0" x2="100" y2="0" stroke="#00629B" stroke-width="4" class="cs-line" />
             
-            // Create multiple floating CS pairs
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    createFloatingCS(container);
-                }, i * 500);
-            }
+            <!-- Left vertical line -->
+            <line x1="0" y1="0" x2="0" y2="300" stroke="#00629B" stroke-width="4" class="cs-line" />
             
-            // Remove container after animation
-            setTimeout(() => {
-                container.remove();
-            }, 8000);
+            <!-- Bottom horizontal line -->
+            <line x1="0" y1="300" x2="100" y2="300" stroke="#00629B" stroke-width="4" class="cs-line" />
+            
+            <!-- C curves -->
+            <path d="M 0,50 Q 50,50 100,50" stroke="#00629B" stroke-width="4" fill="none" class="cs-curve" />
+            <path d="M 0,100 Q 50,100 100,100" stroke="#00629B" stroke-width="4" fill="none" class="cs-curve" />
+            <path d="M 0,150 Q 50,150 100,150" stroke="#00629B" stroke-width="4" fill="none" class="cs-curve" />
+            <path d="M 0,200 Q 50,200 100,200" stroke="#00629B" stroke-width="4" fill="none" class="cs-curve" />
+            <path d="M 0,250 Q 50,250 100,250" stroke="#00629B" stroke-width="4" fill="none" class="cs-curve" />
+            
+            <!-- C text labels -->
+            <text x="50" y="50" text-anchor="middle" fill="#FF6900" font-size="20" font-weight="bold" opacity="0.7">C</text>
+            <text x="50" y="150" text-anchor="middle" fill="#FF6900" font-size="20" font-weight="bold" opacity="0.7">C</text>
+            <text x="50" y="250" text-anchor="middle" fill="#FF6900" font-size="20" font-weight="bold" opacity="0.7">C</text>
+        </g>
+        
+        <!-- S Letter -->
+        <g id="sLetter" transform="translate(400, 50)">
+            <!-- Top horizontal line -->
+            <line x1="0" y1="0" x2="100" y2="0" stroke="#FF6900" stroke-width="4" class="cs-line" />
+            
+            <!-- Right vertical line -->
+            <line x1="100" y1="0" x2="100" y2="300" stroke="#FF6900" stroke-width="4" class="cs-line" />
+            
+            <!-- Bottom horizontal line -->
+            <line x1="0" y1="300" x2="100" y2="300" stroke="#FF6900" stroke-width="4" class="cs-line" />
+            
+            <!-- S curves -->
+            <path d="M 0,50 Q 50,50 100,50" stroke="#FF6900" stroke-width="4" fill="none" class="cs-curve" />
+            <path d="M 0,100 Q 50,100 100,100" stroke="#FF6900" stroke-width="4" fill="none" class="cs-curve" />
+            <path d="M 0,150 Q 50,150 100,150" stroke="#FF6900" stroke-width="4" fill="none" class="cs-curve" />
+            <path d="M 0,200 Q 50,200 100,200" stroke="#FF6900" stroke-width="4" fill="none" class="cs-curve" />
+            <path d="M 0,250 Q 50,250 100,250" stroke="#FF6900" stroke-width="4" fill="none" class="cs-curve" />
+            
+            <!-- S text labels -->
+            <text x="50" y="50" text-anchor="middle" fill="#00629B" font-size="20" font-weight="bold" opacity="0.7">S</text>
+            <text x="50" y="150" text-anchor="middle" fill="#00629B" font-size="20" font-weight="bold" opacity="0.7">S</text>
+            <text x="50" y="250" text-anchor="middle" fill="#00629B" font-size="20" font-weight="bold" opacity="0.7">S</text>
+        </g>
+        
+        <!-- ASCII Art Text -->
+        <text x="300" y="380" text-anchor="middle" fill="white" font-family="monospace" font-size="12" opacity="0.7">
+            _______ _______ 
+        </text>
+        <text x="300" y="395" text-anchor="middle" fill="white" font-family="monospace" font-size="12" opacity="0.7">
+            | C     | S     |
+        </text>
+    </svg>
+    
+    <div style="margin-top:20px;">
+        <button id="animateCS" style="padding:10px 20px; background:#00629B; color:white; border:none; border-radius:5px; cursor:pointer; margin-right:10px;">Animate</button>
+        <button id="changeColors" style="padding:10px 20px; background:#FF6900; color:white; border:none; border-radius:5px; cursor:pointer; margin-right:10px;">Change Colors</button>
+        <button id="closeCS" style="padding:10px 20px; background:#333; color:white; border:none; border-radius:5px; cursor:pointer;">Close</button>
+    </div>
+</div>
+
+<script>
+// CS Visualization Easter Egg
+document.addEventListener('DOMContentLoaded', function() {
+    const csVisualization = document.getElementById('csVisualization');
+    const animateButton = document.getElementById('animateCS');
+    const changeColorsButton = document.getElementById('changeColors');
+    const closeButton = document.getElementById('closeCS');
+    
+    let colorScheme = 0;
+    const colorSchemes = [
+        { c: '#00629B', s: '#FF6900' },
+        { c: '#FF6900', s: '#00629B' },
+        { c: '#5C87A2', s: '#F8F9FA' },
+        { c: '#4CAF50', s: '#FFC107' },
+        { c: '#9C27B0', s: '#FF5722' }
+    ];
+    
+    // Activation: Type "csgraph" anywhere on the page
+    let typed = '';
+    document.addEventListener('keypress', function(e) {
+        typed += e.key.toLowerCase();
+        
+        if (typed.includes('csgraph')) {
+            csVisualization.style.display = 'flex';
+            typed = '';
+            resetAnimation();
         }
         
-        function createFloatingCS(container) {
-            const csElement = document.createElement('div');
-            csElement.style.cssText = `
-                position: absolute;
-                font-size: ${30 + Math.random() * 40}px;
-                font-weight: bold;
-                color: ${Math.random() > 0.5 ? '#00629B' : '#FF6900'};
-                left: ${Math.random() * 100}%;
-                top: ${Math.random() * 100}%;
-                opacity: 0;
-                transform: translate(-50%, -50%) rotate(${Math.random() * 360}deg);
-                pointer-events: none;
-                text-shadow: 0 0 20px currentColor;
-                animation: floatCS 4s ease-out forwards;
-            `;
-            csElement.textContent = 'CS';
-            
-            // Add animation keyframes if not already added
-            if (!document.getElementById('cs-animation-styles')) {
-                const style = document.createElement('style');
-                style.id = 'cs-animation-styles';
-                style.textContent = `
-                    @keyframes floatCS {
-                        0% {
-                            opacity: 0;
-                            transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
-                        }
-                        20% {
-                            opacity: 1;
-                            transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
-                        }
-                        80% {
-                            opacity: 1;
-                            transform: translate(-50%, -50%) scale(1) rotate(360deg);
-                        }
-                        100% {
-                            opacity: 0;
-                            transform: translate(-50%, -50%) scale(0.8) rotate(540deg);
-                        }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-            
-            container.appendChild(csElement);
+        // Keep only last 7 characters
+        if (typed.length > 7) {
+            typed = typed.slice(-7);
         }
+    });
+    
+    // Animate button
+    animateButton.addEventListener('click', function() {
+        const cLines = document.querySelectorAll('#cLetter .cs-line, #cLetter .cs-curve');
+        const sLines = document.querySelectorAll('#sLetter .cs-line, #sLetter .cs-curve');
         
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: linear-gradient(135deg, #00629B, #FF6900);
-                color: white;
-                padding: 15px 25px;
-                border-radius: 10px;
-                box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-                z-index: 10000;
-                font-weight: 500;
-                max-width: 300px;
-                animation: slideIn 0.5s ease-out;
-            `;
-            notification.textContent = message;
-            
-            // Add slide-in animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideIn {
-                    from {
-                        transform: translateX(100%);
-                        opacity: 0;
-                    }
-                    to {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            document.body.appendChild(notification);
-            
-            // Remove notification after 5 seconds
+        // Reset animation
+        resetAnimation();
+        
+        // Animate C letter
+        cLines.forEach((line, index) => {
             setTimeout(() => {
-                notification.style.animation = 'slideOut 0.5s ease-out forwards';
-                setTimeout(() => notification.remove(), 500);
-            }, 5000);
-            
-            // Add slide-out animation
-            const slideOutStyle = document.createElement('style');
-            slideOutStyle.textContent = `
-                @keyframes slideOut {
-                    from {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                    to {
-                        transform: translateX(100%);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(slideOutStyle);
-        }
+                line.style.strokeDasharray = '1000';
+                line.style.strokeDashoffset = '1000';
+                line.style.animation = 'drawLine 1s ease-out forwards';
+            }, index * 100);
+        });
         
-        // Add a hidden CS letter in the footer that can be clicked
-        const footer = document.querySelector('footer');
-        const hiddenCS = document.createElement('div');
-        hiddenCS.style.cssText = `
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            font-size: 12px;
-            color: rgba(255,255,255,0.05);
-            cursor: default;
-            user-select: none;
-            transition: all 0.3s ease;
-        `;
-        hiddenCS.textContent = 'CS';
-        footer.appendChild(hiddenCS);
-        
-        // Make the hidden CS clickable
-        hiddenCS.addEventListener('click', function() {
-            this.style.color = 'rgba(255,255,255,0.8)';
-            this.style.transform = 'scale(1.5)';
+        // Animate S letter
+        sLines.forEach((line, index) => {
             setTimeout(() => {
-                this.style.color = 'rgba(255,255,255,0.05)';
-                this.style.transform = 'scale(1)';
-            }, 1000);
-            
-            // Trigger the CS reveal
-            window.ieee.cs();
+                line.style.strokeDasharray = '1000';
+                line.style.strokeDashoffset = '1000';
+                line.style.animation = 'drawLine 1s ease-out forwards';
+            }, (cLines.length * 100) + (index * 100));
         });
     });
-    </script>
+    
+    // Change colors button
+    changeColorsButton.addEventListener('click', function() {
+        colorScheme = (colorScheme + 1) % colorSchemes.length;
+        const colors = colorSchemes[colorScheme];
+        
+        // Update C letter color
+        document.querySelectorAll('#cLetter .cs-line, #cLetter .cs-curve').forEach(el => {
+            el.style.stroke = colors.c;
+        });
+        
+        // Update S letter color
+        document.querySelectorAll('#sLetter .cs-line, #sLetter .cs-curve').forEach(el => {
+            el.style.stroke = colors.s;
+        });
+        
+        // Update text colors
+        document.querySelectorAll('#cLetter text').forEach(el => {
+            el.style.fill = colors.s;
+        });
+        
+        document.querySelectorAll('#sLetter text').forEach(el => {
+            el.style.fill = colors.c;
+        });
+    });
+    
+    // Close button
+    closeButton.addEventListener('click', function() {
+        csVisualization.style.display = 'none';
+    });
+    
+    // Reset animation
+    function resetAnimation() {
+        const allLines = document.querySelectorAll('.cs-line, .cs-curve');
+        allLines.forEach(line => {
+            line.style.animation = 'none';
+            line.style.strokeDasharray = 'none';
+            line.style.strokeDashoffset = 'none';
+        });
+    }
+    
+    // Add CSS animation for drawing lines
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes drawLine {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Add a hidden CS text in the about section that can be clicked
+    const aboutSection = document.querySelector('#about');
+    const hiddenCSText = document.createElement('div');
+    hiddenCSText.style.cssText = `
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        font-family: monospace;
+        font-size: 10px;
+        color: rgba(0,0,0,0.05);
+        cursor: default;
+        user-select: none;
+        transition: all 0.3s ease;
+    `;
+    hiddenCSText.innerHTML = ` _______ _______ <br>| C     | S     |<br>|   C   |   S   |<br>|     C |     S |<br>| CCCCC | SSSSS |<br>|_______|_______|`;
+    aboutSection.appendChild(hiddenCSText);
+    
+    // Make the hidden CS text clickable
+    hiddenCSText.addEventListener('click', function() {
+        this.style.color = 'rgba(0,0,0,0.8)';
+        this.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            this.style.color = 'rgba(0,0,0,0.05)';
+            this.style.transform = 'scale(1)';
+        }, 1000);
+        
+        // Trigger the CS visualization
+        csVisualization.style.display = 'flex';
+        resetAnimation();
+    });
+});
+</script>
     <!-- Add this right before the closing </body> tag -->
 <!-- Hidden Easter Egg Game -->
 <div id="easterEggGame" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;">
