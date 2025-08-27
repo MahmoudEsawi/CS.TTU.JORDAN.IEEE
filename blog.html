@@ -1627,33 +1627,42 @@
         let currentSearchTerm = '';
         
         // Function to create blog card HTML
-        function createBlogCard(post) {
-            const blog = blogData[post.id];
-            const newBadge = post.isNew ? '<span class="new-badge">New</span>' : '';
-            
-            return `
-                <div class="blog-card" data-category="${blog.category}" data-id="${post.id}">
-                    <div class="blog-card-image" style="background-image: url('${blog.image}');">
-                        ${newBadge}
-                    </div>
-                    <div class="blog-card-content">
-                        <span class="blog-card-category">${blog.category}</span>
-                        <h3 class="blog-card-title">${blog.title}</h3>
-                        <p class="blog-card-excerpt">${blog.content.substring(0, 150)}...</p>
-                        <div class="blog-card-meta">
-                            <div class="blog-card-author">
-                                <img src="esawi2.jpg" alt="${blog.author}" class="author-avatar">
-                                <span>${blog.author}</span>
-                            </div>
-                            <div class="blog-card-date">
-                                <i class="far fa-calendar"></i>
-                                <span>${blog.date}</span>
-                            </div>
+  // Function to create blog card HTML
+function createBlogCard(post) {
+    const blog = blogData[post.id];
+    const newBadge = post.isNew ? '<span class="new-badge">New</span>' : '';
+    const authorImage = blog.authorImage || 'esawi2.jpg'; // Default image if not specified
+    
+    return `
+        <div class="blog-card" data-category="${blog.category}" data-id="${post.id}">
+            <div class="blog-card-image" style="background-image: url('${blog.image}');">
+                ${newBadge}
+            </div>
+            <div class="blog-card-content">
+                <span class="blog-card-category">${blog.category}</span>
+                <h3 class="blog-card-title">${blog.title}</h3>
+                <p class="blog-card-excerpt">${blog.content.substring(0, 150)}...</p>
+                <div class="blog-card-meta">
+                    <div class="blog-card-author">
+                        <div class="author-avatar-edit">
+                            <img src="${authorImage}" alt="${blog.author}" class="author-avatar">
+                            <button class="edit-avatar-btn" data-author="${blog.author}" data-id="${post.id}">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                            <input type="file" class="avatar-upload-input" accept="image/*">
                         </div>
+                        <span>${blog.author}</span>
+                    </div>
+                    <div class="blog-card-date">
+                        <i class="far fa-calendar"></i>
+                        <span>${blog.date}</span>
                     </div>
                 </div>
-            `;
-        }
+            </div>
+        </div>
+    `;
+}
+        
         
         // Function to render blog posts
         function renderBlogPosts() {
