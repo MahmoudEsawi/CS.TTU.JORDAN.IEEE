@@ -2358,6 +2358,48 @@ d);
             </div>
         </div>
     </section>
+    <!-- Add this to the about section -->
+<div style="position:absolute; bottom:10px; right:10px; opacity:0.05; cursor:default;">
+    <svg width="50" height="50" viewBox="0 0 50 50">
+        <rect x="0" y="0" width="50" height="50" fill="black"/>
+        <rect x="5" y="5" width="40" height="40" fill="white"/>
+        <rect x="10" y="10" width="30" height="30" fill="black"/>
+        <rect x="15" y="15" width="20" height="20" fill="white"/>
+        <rect x="20" y="20" width="10" height="10" fill="black"/>
+    </svg>
+</div>
+
+<script>
+// QR Code Treasure Hunt
+document.addEventListener('DOMContentLoaded', function() {
+    // Activation: Click on the QR code
+    const qrCode = document.querySelector('svg').parentElement;
+    
+    qrCode.addEventListener('click', function() {
+        // Create a modal with the actual QR code
+        const modal = document.createElement('div');
+        modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; display:flex; justify-content:center; align-items:center; flex-direction:column;';
+        
+        modal.innerHTML = `
+            <div style="color:white; text-align:center; max-width:500px; padding:20px;">
+                <h2>Secret QR Code</h2>
+                <p>Scan this QR code to reveal a hidden message:</p>
+                <div style="background:white; padding:20px; border-radius:5px; margin:20px 0;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=Congratulations! You found the IEEE CS TTU Easter Egg! You're a true digital explorer." alt="Secret QR Code">
+                </div>
+                <button id="closeQR" style="padding:10px 20px; background:#FF6900; color:white; border:none; border-radius:5px; cursor:pointer;">Close</button>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Close button
+        document.getElementById('closeQR').addEventListener('click', function() {
+            modal.remove();
+        });
+    });
+});
+</script>
     
     <!-- Committee Members Section -->
     <section id="committee" class="committee">
